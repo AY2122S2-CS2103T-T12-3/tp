@@ -16,7 +16,7 @@ import seedu.address.commons.core.LogsCenter;
 public class HelpWindow extends UiPart<Stage> {
 
     public static final String USERGUIDE_URL = "https://ay2122s2-cs2103t-t12-3.github.io/tp/UserGuide.html";
-    public static final String NEWLINE_AND_INDENTATION ="\n     ";
+    public static final String NEWLINE_AND_INDENTATION = "\n     ";
     public static final String HELP_MESSAGE = "Tracey supports the following features: Find, Add, Delete, Edit, Clear, "
         + "Summarise, List, Help and Filter.\n"
         + "This guide aims to showcase the syntax used for the aforementioned features.\n"
@@ -37,8 +37,8 @@ public class HelpWindow extends UiPart<Stage> {
         + NEWLINE_AND_INDENTATION
         + "Example 2: add e/student69@u.nus.edu n/ Martin\n"
 
-        + "\n3.DELETE a contact at a specific INDEX. The index refers to the index number shown in the " +
-            "displayed person list."
+        + "\n3.DELETE a contact at a specific INDEX. The index refers to the index number shown in the "
+        + "displayed person list."
         + NEWLINE_AND_INDENTATION
         + "Format: delete INDEX"
         + NEWLINE_AND_INDENTATION
@@ -46,8 +46,8 @@ public class HelpWindow extends UiPart<Stage> {
         + NEWLINE_AND_INDENTATION
         + "Example 2: Delete 4\n"
 
-        + "\n4. EDIT the person at the specified INDEX. The index refers to the index number shown in the " +
-            "displayed person list."
+        + "\n4. EDIT the person at the specified INDEX. The index refers to the index number shown in the "
+        + "displayed person list."
         + NEWLINE_AND_INDENTATION
         + "Format: edit INDEX n/NAME ..."
         + NEWLINE_AND_INDENTATION
@@ -59,8 +59,8 @@ public class HelpWindow extends UiPart<Stage> {
         + NEWLINE_AND_INDENTATION
         + "Format: clear\n"
 
-        + "\n6. SUMMARISE the record inside Tracey that an overview of the data," +
-            " such as number of students who are covid-positive"
+        + "\n6. SUMMARISE the record inside Tracey that an overview of the data,"
+        + " such as number of students who are covid-positive"
         + NEWLINE_AND_INDENTATION
         + "Format:summarise record\n"
 
