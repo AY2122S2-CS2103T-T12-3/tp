@@ -31,6 +31,8 @@ public class HelpWindow extends UiPart<Stage> {
 
         + "\n2. ADD a student with relevant details into Tracey."
         + NEWLINE_AND_INDENTATION
+        + "List of tags: n/Name f/Faculty p/Phone Number a/Address e/Email mc/Matriculation Number CS/Covid Status"
+        + NEWLINE_AND_INDENTATION
         + "Format: add n/NAME p/PHONENUMBER e/EMAIL ..."
         + NEWLINE_AND_INDENTATION
         + "Example 1: add n/Melvin f/SOC cs/ Negative"
@@ -56,6 +58,8 @@ public class HelpWindow extends UiPart<Stage> {
         + "Example 2: edit 2 n/David Limpeh t/\n"
 
         + "\n5. CLEAR all the data inside Tracey"
+        + NEWLINE_AND_INDENTATION
+        + "WARNING: Cleared data cannot be retrieved!"
         + NEWLINE_AND_INDENTATION
         + "Format: clear\n"
 
