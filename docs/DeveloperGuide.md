@@ -178,6 +178,62 @@ The summarise mechanism implements the following sequence and interactions for t
 
 When execute is called on the SummariseCommand object, there are multiple call back to self to anaylse and produce the result back to the Logic Manager.
 
+#### Pie Chart Window
+
+##### How the feature is implemented
+
+**New class** <br>
+A `PieChartWindow` controller class and a `PieChartWindow` FXML class is created for this feature.
+The `PieChartWindow` controller class will create pie charts using data from `SummariseCommand#getPositiveStatsByFacultyData()` and `SummariseCommand#getCovidStatsByBlockDataList()`.
+
+Addition of method(s) to `PieChartWindow` controller class:
+* `PieChartWindow#execute()` puts all of the pie chart into a `VBox` and set the scene for the `PieChartWindow` FXML class
+* `PieChartWindow#makePieChart()` creates a pie chart
+* `PieChartWindow#collateBlocksChart()` creates a pie chart using `PieChartWindow#makePieChart()` for each block that shows covid positive, negative and HRN percentage for contacts present in Tracey and adds it to a `HBox`
+* `PieChartWindow#createFacultyChartPositive()` creates a pie chart using `PieChartWindow#makePieChart()` that shows the covid positive percentage for all faculties for each contact present in Tracey and adds it to a `HBox`
+* `PieChartWindow#makePieChartScene()` creates the scene for the pie charts
+* `PieChartWindow#show()` show the pie chart window
+* `PieChartWindow#isShowing()` returns a boolean whether the pie chart window is showing
+* `PieChartWindow#hide()` hide the pie chart window
+<br>
+**Modifications to `SummariseCommand`** <br>
+Addition of variable(s):
+* `positiveStatsByFacultyData`, a private static variable of type `TreeMap<String, Double>`
+* `covidStatsByBlockDataList`, a private static variable of type `TreeMap<String, TreeMap<String, Double>>`
+<br>
+Modifications to existing method(s):
+* `SummariseCommand#summariseFaculty()` will put in `numberOfPositive` (percentage of covid-positive cases in its respective faculty) for each `facultyName` (pre-defined constants from the `Faculty` class) into `positiveStatsByFacultyData` for contacts that are present in Tracey.
+* `SummariseCommand#summariseBlock()` will put in `numberOfPositive`, `numberOfNegative` and `numberOfHrn` for each `blockLetter` (pre-defined constants from the `Block` class) into a local variable of type `TreeMap<String, Double>` and then puts into `covidStatsByBlockDataList` for each for contacts that are present in Tracey.
+<br>
+Addition of method(s):
+* `SummariseCommand#getPositiveStatsByFacultyData()` getter method that returns `positiveStatsByFacultyData`
+* `SummariseCommand#getCovidStatsByBlockDataList()` getter method that returns `covidStatsByBlockDataList`
+<br>
+**Modifications to `MainWindow`**
+Modifications to existing method(s):
+* `MainWindow#executeCommand()` will now check if the command is a `SummariseCommand`, if it is then `MainWindow#handleSummarise()` will be invoked
+Addition of method(s):
+* `MainWindow#handleSummarise()` shows the pie chart window if it is not already open, or else will reopen a new pie chart window
+
+[Insert Diagram here]
+
+##### Why it is implemented that way
+The data needed for the pie charts should be coupled with `SummariseCommand`, therefore it is necessary to implement this feature in such a way that the pie chart data is created upon invocation `SummariseCommand`. A `PieChartWindow` controller and FXML class is also needed to abstract the creation of the pie charts and opening a new window respectively. The `MainWindow` class is then modified accordingly.
+
+##### Alternatives considered
+
+**Aspect: How data is passed to the pie charts:**
+
+* **Alternative 1 (current choice):** `SummariseCommand` will pass in necessary data into data structures (`TreeMap` in this case) upon invocation which then can be obtained using getter methods
+    * Pros: Easy to implement.
+    * Cons: Dependent on the `SummariseCommand` class to pass in correct inputs.
+    * Other consideration(s):
+      * Use the Singleton design principle for the data structures. 
+
+* **Alternative 2:** Parse the feedback to user message from `SummariseCommand`
+    * Pros: No modifications to the `SummariseCommand` class.
+    * Cons: Dependent on the feedback message, need to implement complicated methods to parse the message, parsing methods need to be modified if the format of the feedback message is changed.
+
 ### \[Proposed\] Undo/redo feature
 
 #### Proposed Implementation
