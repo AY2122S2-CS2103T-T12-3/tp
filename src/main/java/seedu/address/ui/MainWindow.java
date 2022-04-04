@@ -3,8 +3,8 @@ package seedu.address.ui;
 import java.io.File;
 import java.util.List;
 import java.util.logging.Logger;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
+
+import com.google.common.io.Files;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,6 +13,7 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
@@ -173,25 +174,26 @@ public class MainWindow extends UiPart<Stage> {
      * Opens file manager for import window
      */
     @FXML
-    public void handleImport () throws ParseException, CommandException {
-        JFileChooser fileChooser = new JFileChooser();
-        JDialog dialog = new JDialog();
-        fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
-        int returnValue = fileChooser.showOpenDialog(dialog);
-        if (returnValue == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fileChooser.getSelectedFile();
-            ImportFileParser converter = new ImportFileParser();
-            List<String> res;
-            res = converter.jsonToPerson(selectedFile);
-            for (int i = 0; i < res.size(); i++) {
-                try {
-                    executeCommand(res.get(i));
-                } catch (ParseException e) {
-                    throw new ParseException("haha");
-                }
+    public void handleImport () throws CommandException {
+        FileChooser fileChooser = new FileChooser();
+        Stage stage = new Stage();
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+        File selectedFile = fileChooser.showOpenDialog(stage);
+        String fileType = selectedFile.toString();
+        if (!Files.getFileExtension(fileType).equals("xlsx") && !Files.getFileExtension(fileType).equals("xls")) {
+            resultDisplay.setFeedbackToUser("Imported file is not in excel format");
+        }
+        ImportFileParser converter = new ImportFileParser();
+        List<String> res;
+        res = converter.jsonToPerson(selectedFile);
+        for (int i = 0; i < res.size(); i++) {
+            try {
+                executeCommand(res.get(i));
+            } catch (ParseException e) {
+                resultDisplay.setFeedbackToUser("Some of the entry are not in correct format");
             }
         }
-
+        resultDisplay.setFeedbackToUser("File successfully imported");
     }
 
     /**

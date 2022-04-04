@@ -5,6 +5,8 @@ import static java.util.Objects.requireNonNull;
 import java.io.File;
 import java.util.List;
 
+import com.google.common.io.Files;
+
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.AddressBookParser;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -25,15 +27,13 @@ public class ImportCommand extends Command {
             + ":C//Users//Documents/students.xlsx ";
 
     public static final String MESSAGE_SUCCESS = "New file added!";
+    public static final String MESSAGE_FAIL = "New file added!";
 
     private static String toFile;
     /**
      * Creates an ImportCommand to add the specified
      */
     public ImportCommand(String filePath) throws IllegalArgumentException {
-        if (filePath == null) {
-            throw new IllegalArgumentException("filepath is not specified");
-        }
         requireNonNull(filePath);
         toFile = filePath;
     }
@@ -48,10 +48,10 @@ public class ImportCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException, ParseException {
         requireNonNull(model);
-        File f = new File(toFile);
-        if (!f.exists()) {
-            throw new CommandException("the file cannot be found!");
+        if (!Files.getFileExtension(toFile).equals("xlsx") && !Files.getFileExtension(toFile).equals("xls")) {
+            return new CommandResult("Imported file is not in excel format");
         }
+        File f = new File(toFile);
         ImportFileParser converter = new ImportFileParser();
         List<String> res = converter.jsonToPerson(f);
         for (int i = 0; i < res.size(); i++) {
